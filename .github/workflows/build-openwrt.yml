@@ -113,7 +113,8 @@ jobs:
     - name: Load custom configuration
       run: |
         [ -e files ] && mv files openwrt/files
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        # 直接把仓库根目录的.config复制到openwrt目录
+        cp $GITHUB_WORKSPACE/.config openwrt/.config
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
@@ -129,8 +130,6 @@ jobs:
       id: package
       run: |
         cd openwrt
-        # 直接从上级目录复制，避开变量问题
-        cp ../.config .config
         make defconfig
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
