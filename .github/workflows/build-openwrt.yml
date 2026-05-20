@@ -129,7 +129,8 @@ jobs:
       id: package
       run: |
         cd openwrt
-        cp $GITHUB_WORKSPACE/.config .config
+        # 直接从上级目录复制，避开变量问题
+        cp ../.config .config
         make defconfig
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
